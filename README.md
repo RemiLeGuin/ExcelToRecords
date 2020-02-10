@@ -1,3 +1,3 @@
-# Excel to Record
+# Excel to Records
 
 Repository under construction
