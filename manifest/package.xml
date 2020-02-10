@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ExcelToRecords</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>ExcelToRecords</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>excelToRecords_UploadSheet</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>SheetJS</members>
+        <name>StaticResource</name>
+    </types>
+    <version>47.0</version>
+</Package>

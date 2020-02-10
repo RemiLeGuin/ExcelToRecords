@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Upload an Excel sheet to create records in Salesforce.</description>
+    <flexiPageRegions>
+        <componentInstances>
+            <componentName>excelToRecords_UploadSheet</componentName>
+        </componentInstances>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Excel to Records</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
+    <type>AppPage</type>
+</FlexiPage>

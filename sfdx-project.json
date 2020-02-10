@@ -1,0 +1,17 @@
+{
+    "packageDirectories": [
+        {
+            "path": "excel-to-records",
+            "default": true,
+            "package": "Excel to Records",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "47.0",
+    "packageAliases": {
+        "Excel to Records": "0Ho3X000000TN7cSAG"
+    }
+}
