@@ -6,13 +6,12 @@ import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     @track message;
-    @track jsonRaws;
-    
+
     renderedCallback() {
         Promise.all([
             loadScript(this, SHEETJS + '/xlsx.mini.js')
         ])
-            .then(() => {})
+            .then(() => { })
             .catch(error => {
                 this.message = error.body.message;
             });
@@ -20,6 +19,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     readFile(event) {
         let reader = new FileReader();
+        var self = this;
         reader.onload = function (e) {
             var binary = '';
             var bytes = new Uint8Array(e.target.result);
@@ -29,8 +29,14 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             }
             var workbook = XLSX.read(binary, { type: 'binary' });
             var sheet_name_list = workbook.SheetNames;
-            this.jsonRaws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-            console.log(this.jsonRaws);
+            var raws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+            insertRecords({ raws: raws })
+                .then(result => {
+                    self.message = result;
+                })
+                .catch(error => {
+                    self.message = error;
+                });
         }
         reader.readAsArrayBuffer(event.target.files[0]);
     }
