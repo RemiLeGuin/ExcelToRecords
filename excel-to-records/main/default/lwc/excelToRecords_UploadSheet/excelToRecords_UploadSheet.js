@@ -1,10 +1,12 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
+import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     @track message;
+    @track jsonRaws;
     
     renderedCallback() {
         Promise.all([
@@ -27,7 +29,8 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             }
             var workbook = XLSX.read(binary, { type: 'binary' });
             var sheet_name_list = workbook.SheetNames;
-            console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]))
+            this.jsonRaws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+            console.log(this.jsonRaws);
         }
         reader.readAsArrayBuffer(event.target.files[0]);
     }
