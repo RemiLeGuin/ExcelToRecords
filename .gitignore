@@ -7,7 +7,9 @@
 .vscode/
 
 # Profiles
+excel-to-records/main/default/profilePasswordPolicies
 excel-to-records/main/default/profiles
+excel-to-records/main/default/profileSessionSettings
 
 # Logs
 logs

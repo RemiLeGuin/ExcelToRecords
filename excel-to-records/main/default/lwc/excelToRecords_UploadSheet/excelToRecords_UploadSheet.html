@@ -1,3 +1,8 @@
 <template>
-    <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></lightning-input>
+    <lightning-card  title="">
+        <div class="slds-align_absolute-center">
+            <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange={readFile}></lightning-input>
+        </div>
+        {message}
+    </lightning-card>
 </template>

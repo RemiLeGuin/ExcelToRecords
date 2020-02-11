@@ -3,6 +3,7 @@
 /*exported XLSX */
 /*global global, exports, module, require:false, process:false, Buffer:false, ArrayBuffer:false */
 var XLSX = {};
+window.XLSX = XLSX;
 function make_xlsx_lib(XLSX){
 XLSX.version = '0.15.5';
 var current_codepage = 1200, current_ansi = 1252;
