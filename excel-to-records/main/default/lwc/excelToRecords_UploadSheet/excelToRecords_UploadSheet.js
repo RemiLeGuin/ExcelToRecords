@@ -1,15 +1,31 @@
 import { LightningElement, track } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
+import getObjects from '@salesforce/apex/ExcelToRecords.getObjects';
 import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     @track message;
     @track raws;
-    @track objectType = 'Lead';
+    @track objectType;
     @track objectTypes = [{ label: 'Lead', value: 'Lead' }];
-
+    /*
+    connectedCallback() {
+        getObjects()
+            .then(result => {
+                var self = this;
+                result.forEach(function (objectType) {
+                    var option = { label: objectType.Label, value: objectType.DeveloperName };
+                    self.objectTypes.push(option);
+                });
+                console.log(this.objectTypes);
+            })
+            .catch(error => {
+                this.message = error;
+            });
+    }
+    */
     renderedCallback() {
         Promise.all([
             loadScript(this, SHEETJS + '/xlsx.mini.js')
@@ -42,7 +58,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
     }
 
     handleSubmit() {
-        insertRecords({ raws: this.raws, sObjectType: this.objectType })
+        insertRecords({ raws: this.raws, objectType: this.objectType })
             .then(result => {
                 this.message = result;
             })

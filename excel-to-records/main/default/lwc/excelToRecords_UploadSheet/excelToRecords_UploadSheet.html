@@ -4,7 +4,7 @@
             <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange={readFile}></lightning-input>
         </div>
         <div class="slds-align_absolute-center slds-m-top_medium">
-            <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} onchange={handleObjectTypeChange}></lightning-combobox>
+            <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} onload={handleObjectTypeLoad} onchange={handleObjectTypeChange}></lightning-combobox>
         </div>
         <div class="slds-align_absolute-center slds-m-top_large">
             <lightning-button variant="brand" label="Insert Records" onclick={handleSubmit} class="slds-m-left_x-small"></lightning-button>

@@ -1,65 +1,82 @@
 public with sharing class ExcelToRecords {
 
-    @AuraEnabled
-    public static String insertRecords(List<Object> raws, String sObjectType) {
+    @AuraEnabled(cacheable=true)
+    public static List<ExcelToRecords_Object__mdt> getObjects() {
+        return [SELECT Label, DeveloperName FROM ExcelToRecords_Object__mdt];
+    }
 
-        Map<String, Object> keys = new Map<String, Object> ();
+    @AuraEnabled
+    public static String insertRecords(List<Object> raws, String objectType) {
+
+        String sObjectType = [SELECT SalesforceObject__c FROM ExcelToRecords_Object__mdt WHERE DeveloperName = :objectType LIMIT 1].SalesforceObject__c;
+        Map<String, String> mappings = new Map<String, String> ();
+        for (ExcelToRecords_FieldMapping__mdt mapping : [SELECT ExcelColumn__c, SalesforceField__c
+                                                         FROM ExcelToRecords_FieldMapping__mdt
+                                                         WHERE Object__r.Label = :objectType]) {
+            mappings.put(mapping.ExcelColumn__c, mapping.SalesforceField__c);
+        }
+
+        Map<String, Object> columns = new Map<String, Object> ();
         Map<Object, Object> rawMapForKeys = (Map<Object,Object>)raws[0];
         for (Object key : rawMapForKeys.keySet()) {
-            keys.put((String)key, key);
+            columns.put((String)key, key);
         }
 
         Map<String, String> fieldsType = new Map<String, String> ();
         Schema.DescribeSObjectResult describeResult = Schema.getGlobalDescribe().get(sObjectType).getDescribe();
-        for (String fieldName : keys.keySet()) {
-            fieldsType.put(fieldName, String.valueOf(describeResult.fields.getMap().get(fieldName).getDescribe().getType()));
+        for (String column : columns.keySet()) {
+            if (!mappings.isEmpty() && !String.isBlank(mappings.get(column))) {
+                fieldsType.put(mappings.get(column), String.valueOf(describeResult.fields.getMap().get(mappings.get(column)).getDescribe().getType()));
+            }
         }
 
         List<SObject> records = new List<SObject> ();
         for (Object raw : raws) {
             SObject record = Schema.getGlobalDescribe().get(sObjectType).newSObject();
             Map<Object, Object> rawMap = (Map<Object, Object>)raw;
-            for (String fieldName : keys.keySet()) {
-                String fieldType = fieldsType.get(fieldName);
-                switch on fieldType {
-                    when 'STRING' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'EMAIL' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'PHONE' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'PICKLIST' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'TEXTAREA' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'URL' {
-                        record.put(fieldName, String.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'BOOLEAN' {
-                        record.put(fieldName, Boolean.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'INTEGER' {
-                        record.put(fieldName, Integer.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'DOUBLE' {
-                        record.put(fieldName, Double.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'PERCENT' {
-                        record.put(fieldName, Double.valueOf(rawMap.get(keys.get(fieldName))));
-                    }
-                    when 'CURRENCY' {
-                        record.put(fieldName, (Decimal)rawMap.get(keys.get(fieldName)));
-                    }
-                    when 'DATETIME' {
-                        record.put(fieldName, Datetime.parse(String.valueOf(rawMap.get(keys.get(fieldName)))));
-                    }
-                    when 'DATE' {
-                        record.put(fieldName, Date.parse(String.valueOf(rawMap.get(keys.get(fieldName)))));
+            for (String column : columns.keySet()) {
+                if (!mappings.isEmpty() && !String.isBlank(mappings.get(column))) {
+                    String fieldType = fieldsType.get(mappings.get(column));
+                    switch on fieldType {
+                        when 'STRING' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'EMAIL' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'PHONE' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'PICKLIST' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'TEXTAREA' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'URL' {
+                            record.put(mappings.get(column), String.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'BOOLEAN' {
+                            record.put(mappings.get(column), Boolean.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'INTEGER' {
+                            record.put(mappings.get(column), Integer.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'DOUBLE' {
+                            record.put(mappings.get(column), Double.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'PERCENT' {
+                            record.put(mappings.get(column), Double.valueOf(rawMap.get(columns.get(column))));
+                        }
+                        when 'CURRENCY' {
+                            record.put(mappings.get(column), (Decimal)rawMap.get(columns.get(column)));
+                        }
+                        when 'DATETIME' {
+                            record.put(mappings.get(column), Datetime.parse(String.valueOf(rawMap.get(columns.get(column)))));
+                        }
+                        when 'DATE' {
+                            record.put(mappings.get(column), Date.parse(String.valueOf(rawMap.get(columns.get(column)))));
+                        }
                     }
                 }
             }
