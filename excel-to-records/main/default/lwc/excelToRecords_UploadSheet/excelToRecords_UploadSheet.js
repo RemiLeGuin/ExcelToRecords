@@ -1,4 +1,4 @@
-import { LightningElement, track, wire } from 'lwc';
+import { LightningElement, track } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
 import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
@@ -6,6 +6,9 @@ import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     @track message;
+    @track raws;
+    @track objectType = 'Lead';
+    @track objectTypes = [{ label: 'Lead', value: 'Lead' }];
 
     renderedCallback() {
         Promise.all([
@@ -15,6 +18,10 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             .catch(error => {
                 this.message = error.body.message;
             });
+    }
+
+    handleObjectTypeChange(event) {
+        this.objectType = event.detail.value;
     }
 
     readFile(event) {
@@ -29,16 +36,19 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             }
             var workbook = XLSX.read(binary, { type: 'binary' });
             var sheet_name_list = workbook.SheetNames;
-            var raws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
-            insertRecords({ raws: raws })
-                .then(result => {
-                    self.message = result;
-                })
-                .catch(error => {
-                    self.message = error;
-                });
+            self.raws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
         }
         reader.readAsArrayBuffer(event.target.files[0]);
+    }
+
+    handleSubmit() {
+        insertRecords({ raws: this.raws, sObjectType: this.objectType })
+            .then(result => {
+                this.message = result;
+            })
+            .catch(error => {
+                this.message = error;
+            });
     }
 
 }
