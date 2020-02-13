@@ -66,8 +66,11 @@
     <relatedLists>
         <fields>MasterLabel</fields>
         <fields>DeveloperName</fields>
-        <fields>NamespacePrefix</fields>
+        <fields>ExcelColumn__c</fields>
+        <fields>SalesforceField__c</fields>
         <relatedList>ExcelToRecords_FieldMapping__mdt.Object__c</relatedList>
+        <sortField>ExcelColumn__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
@@ -75,7 +78,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1j000000rQ2R</masterLabel>
+        <masterLabel>00h1X0000011Mrm</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

@@ -1,4 +1,4 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
 import getObjects from '@salesforce/apex/ExcelToRecords.getObjects';
@@ -9,24 +9,9 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
     @track message;
     @track raws;
     @track objectType;
-    @track objectTypes = [{ label: 'Lead', value: 'Lead' }];
-    /*
+    @track objectTypes = [];
+
     connectedCallback() {
-        getObjects()
-            .then(result => {
-                var self = this;
-                result.forEach(function (objectType) {
-                    var option = { label: objectType.Label, value: objectType.DeveloperName };
-                    self.objectTypes.push(option);
-                });
-                console.log(this.objectTypes);
-            })
-            .catch(error => {
-                this.message = error;
-            });
-    }
-    */
-    renderedCallback() {
         Promise.all([
             loadScript(this, SHEETJS + '/xlsx.mini.js')
         ])
@@ -34,6 +19,25 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             .catch(error => {
                 this.message = error.body.message;
             });
+    }
+
+    @wire(getObjects)
+    wiredObjects({ error, data }) {
+        var self = this;
+        if (data) {
+            data.forEach(function (objectType) {
+                var option = { label: objectType.Label, value: objectType.DeveloperName };
+                self.objectTypes = [ ...self.objectTypes, option ];
+            });
+            if (this.objectTypes.length > 0) {
+                this.objectType = this.objectTypes[0].value;
+            }
+            this.message = undefined;
+        }
+        else if (error) {
+            this.message = error;
+            this.objectTypes = [];
+        }
     }
 
     handleObjectTypeChange(event) {
