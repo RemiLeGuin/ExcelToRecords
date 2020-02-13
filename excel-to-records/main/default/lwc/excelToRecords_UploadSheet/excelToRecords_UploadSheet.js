@@ -2,14 +2,22 @@ import { LightningElement, track, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
 import getObjects from '@salesforce/apex/ExcelToRecords.getObjects';
+import getRecordTypes from '@salesforce/apex/ExcelToRecords.getRecordTypes';
 import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     @track message;
     @track raws;
-    @track objectType;
     @track objectTypes = [];
+    @track objectType;
+    @track sObjectTypes = new Map();
+    @track sObjectType;
+    @track isObjectTypeInputDisabled = true;
+    @track recordTypes = [];
+    @track recordTypeId;
+    @track isRecordTypeInputDisabled = true;
+    @track isSubmitButtonDisabled = true;
 
     connectedCallback() {
         Promise.all([
@@ -28,9 +36,20 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             data.forEach(function (objectType) {
                 var option = { label: objectType.Label, value: objectType.DeveloperName };
                 self.objectTypes = [ ...self.objectTypes, option ];
+                self.sObjectTypes.set(objectType.DeveloperName, objectType.SalesforceObject__c);
             });
             if (this.objectTypes.length > 0) {
                 this.objectType = this.objectTypes[0].value;
+                this.sObjectType = this.sObjectTypes.get(this.objectTypes[0].value);
+                this.isObjectTypeInputDisabled = false;
+                if (this.raws) {
+                    this.isSubmitButtonDisabled = false;
+                }
+            }
+            else {
+                this.objectType = undefined;
+                this.isObjectTypeInputDisabled = true;
+                this.isSubmitButtonDisabled = true;
             }
             this.message = undefined;
         }
@@ -40,11 +59,36 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
         }
     }
 
-    handleObjectTypeChange(event) {
-        this.objectType = event.detail.value;
+    @wire(getRecordTypes, { recordTypeId: '$sObjectType' })
+    wiredRecordtypes({ error, data }) {
+        var self = this;
+        if (data) {
+            data.forEach(function (recordType) {
+                var option = { label: recordType.Name, value: recordType.Id };
+                self.recordTypes = [ ...self.recordTypes, option ];
+            });
+            if (this.recordTypes.length > 0) {
+                this.recordTypeId = this.recordTypes[0].value;
+                this.isRecordTypeInputDisabled = false;
+            }
+            else {
+                this.recordTypeId = undefined;
+                this.isRecordTypeInputDisabled = true;
+            }
+            this.message = undefined;
+        }
+        else if (error) {
+            this.message = error;
+            this.recordTypes = [];
+        }
     }
 
-    readFile(event) {
+    handleObjectTypeChange(event) {
+        this.objectType = event.detail.value;
+        this.sObjectType = this.sObjectTypes.get(event.detail.value);
+    }
+
+    handleUpload(event) {
         let reader = new FileReader();
         var self = this;
         reader.onload = function (e) {
@@ -57,18 +101,22 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             var workbook = XLSX.read(binary, { type: 'binary' });
             var sheet_name_list = workbook.SheetNames;
             self.raws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+            if (self.objectType) {
+                self.isSubmitButtonDisabled = false;
+            }
         }
         reader.readAsArrayBuffer(event.target.files[0]);
     }
-
+    
     handleSubmit() {
-        insertRecords({ raws: this.raws, objectType: this.objectType })
+        insertRecords({ raws: this.raws, objectType: this.objectType, sObjectType: this.sObjectType, recordTypeId: this.recordTypeId })
             .then(result => {
                 this.message = result;
             })
             .catch(error => {
-                this.message = error;
+                console.log(error);
+                this.message = error.body.message;
             });
     }
-
+    
 }

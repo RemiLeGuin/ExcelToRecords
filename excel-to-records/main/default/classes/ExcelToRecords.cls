@@ -2,13 +2,17 @@ public with sharing class ExcelToRecords {
 
     @AuraEnabled(cacheable=true)
     public static List<ExcelToRecords_Object__mdt> getObjects() {
-        return [SELECT Label, DeveloperName FROM ExcelToRecords_Object__mdt];
+        return [SELECT Label, DeveloperName, SalesforceObject__c FROM ExcelToRecords_Object__mdt];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<RecordType> getRecordTypes(String sObjectType) {
+        return [SELECT Id, Name FROM RecordType WHERE SObjectType = :sObjectType];
     }
 
     @AuraEnabled
-    public static String insertRecords(List<Object> raws, String objectType) {
+    public static String insertRecords(List<Object> raws, String objectType, String sObjectType, String recordTypeId) {
 
-        String sObjectType = [SELECT SalesforceObject__c FROM ExcelToRecords_Object__mdt WHERE DeveloperName = :objectType LIMIT 1].SalesforceObject__c;
         Map<String, String> mappings = new Map<String, String> ();
         for (ExcelToRecords_FieldMapping__mdt mapping : [SELECT ExcelColumn__c, SalesforceField__c
                                                          FROM ExcelToRecords_FieldMapping__mdt
@@ -34,6 +38,9 @@ public with sharing class ExcelToRecords {
         for (Object raw : raws) {
             SObject record = Schema.getGlobalDescribe().get(sObjectType).newSObject();
             Map<Object, Object> rawMap = (Map<Object, Object>)raw;
+            if (!String.isBlank(recordTypeId)) {
+                record.put('RecordTypeId', recordTypeId);
+            }
             for (String column : columns.keySet()) {
                 if (!mappings.isEmpty() && !String.isBlank(mappings.get(column))) {
                     String fieldType = fieldsType.get(mappings.get(column));

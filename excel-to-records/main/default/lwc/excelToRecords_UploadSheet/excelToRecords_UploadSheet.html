@@ -1,14 +1,17 @@
 <template>
     <lightning-card  title="">
         <div class="slds-align_absolute-center">
-            <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange={readFile}></lightning-input>
+            <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange={handleUpload}></lightning-input>
         </div>
         <div class="slds-align_absolute-center slds-m-top_medium">
-            <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} onload={handleObjectTypeLoad} onchange={handleObjectTypeChange}></lightning-combobox>
+            <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} disabled={isObjectTypeInputDisabled} onchange={handleObjectTypeChange}></lightning-combobox>
+        </div>
+        <div class="slds-align_absolute-center slds-m-top_medium">
+            <lightning-combobox name="record-type" label="Record Type" value={recordType} options={recordsTypes} disabled={isRecordTypeInputDisabled} onchange={handleRecordTypeChange}></lightning-combobox>
         </div>
         <div class="slds-align_absolute-center slds-m-top_large">
-            <lightning-button variant="brand" label="Insert Records" onclick={handleSubmit} class="slds-m-left_x-small"></lightning-button>
+            <lightning-button variant="brand" label="Insert Records" class="slds-m-left_x-small" disabled={isSubmitButtonDisabled} onclick={handleSubmit}></lightning-button>
         </div>
-        <div class="slds-align_absolute-center slds-m-top_large">{message}</div>
+        <div class="slds-align_absolute-center slds-m-top_large slds-m-bottom_large">{message}</div>
     </lightning-card>
 </template>
