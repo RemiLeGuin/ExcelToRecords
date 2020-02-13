@@ -2,11 +2,42 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>ExcelToRecords</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ExcelToRecords_FieldMapping.Lead_AddressLine1</members>
+        <members>ExcelToRecords_FieldMapping.Lead_City</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Company</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Country</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Email</members>
+        <members>ExcelToRecords_FieldMapping.Lead_FirstName</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Industry</members>
+        <members>ExcelToRecords_FieldMapping.Lead_LastName</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Phone</members>
+        <members>ExcelToRecords_FieldMapping.Lead_PostalCode</members>
+        <members>ExcelToRecords_FieldMapping.Lead_StateProvince</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Status</members>
+        <members>ExcelToRecords_FieldMapping.Lead_Title</members>
+        <members>ExcelToRecords_Object.Lead</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>ExcelToRecords_FieldMapping__mdt</members>
+        <members>ExcelToRecords_Object__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>ExcelToRecords</members>
         <name>CustomTab</name>
     </types>
     <types>
         <members>ExcelToRecords</members>
         <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>ExcelToRecords_FieldMapping__mdt-Excel to Records - Field Mapping Layout</members>
+        <members>ExcelToRecords_Object__mdt-Excel to Records - Object Layout</members>
+        <name>Layout</name>
     </types>
     <types>
         <members>excelToRecords_UploadSheet</members>
