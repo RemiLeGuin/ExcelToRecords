@@ -5,6 +5,18 @@
         <name>ApexClass</name>
     </types>
     <types>
+        <members>Case.Excel to Records</members>
+        <name>BusinessProcess</name>
+    </types>
+    <types>
+        <members>ExcelToRecords_FieldMapping.Demande_Description</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Email</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Escalade</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Motif</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Nom</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Priorite</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Statut</members>
+        <members>ExcelToRecords_FieldMapping.Demande_Sujet</members>
         <members>ExcelToRecords_FieldMapping.Lead_AddressLine1</members>
         <members>ExcelToRecords_FieldMapping.Lead_City</members>
         <members>ExcelToRecords_FieldMapping.Lead_Company</members>
@@ -18,6 +30,7 @@
         <members>ExcelToRecords_FieldMapping.Lead_StateProvince</members>
         <members>ExcelToRecords_FieldMapping.Lead_Status</members>
         <members>ExcelToRecords_FieldMapping.Lead_Title</members>
+        <members>ExcelToRecords_Object.Demande</members>
         <members>ExcelToRecords_Object.Lead</members>
         <name>CustomMetadata</name>
     </types>
@@ -42,6 +55,11 @@
     <types>
         <members>excelToRecords_UploadSheet</members>
         <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>Case.ExcelToRecords_Prestations</members>
+        <members>Case.ExcelToRecords_Restitutions</members>
+        <name>RecordType</name>
     </types>
     <types>
         <members>SheetJS</members>

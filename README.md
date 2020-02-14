@@ -4,7 +4,7 @@ Repository under construction.
 
 ## Install Unlocked Package
 
-Install the unlocked package with this ID: 04t3X000002c3zPQAQ
+Install the unlocked package with this ID: 04t3X000002c8nLQAQ
 
 In Trailhead Playgrounds, you can do it by copy/pasting the ID in the install page:
 
