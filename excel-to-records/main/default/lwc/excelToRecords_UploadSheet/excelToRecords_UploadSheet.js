@@ -32,11 +32,11 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
     }
 
     @wire(getObjects)
-    wiredObjects({ error, data }) {
+    wiredObjects({ data, error }) {
         var self = this;
         if (data) {
             data.forEach(function (objectType) {
-                var option = { label: objectType.Label, value: objectType.DeveloperName };
+                let option = { label: objectType.Label, value: objectType.DeveloperName };
                 self.objectTypes = [ ...self.objectTypes, option ];
                 self.sObjectTypes.set(objectType.DeveloperName, objectType.SalesforceObject__c);
             });
@@ -61,12 +61,13 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
         }
     }
 
-    @wire(getRecordTypes, { recordTypeId: '$sObjectType' })
-    wiredRecordtypes({ error, data }) {
+    @wire(getRecordTypes, { sObjectType: '$sObjectType' })
+    wiredRecordtypes({ data, error }) {
         var self = this;
+        this.recordTypes = [];
         if (data) {
             data.forEach(function (recordType) {
-                var option = { label: recordType.Name, value: recordType.Id };
+                let option = { label: recordType.Name, value: recordType.Id };
                 self.recordTypes = [ ...self.recordTypes, option ];
             });
             if (this.recordTypes.length > 0) {
@@ -90,19 +91,23 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
         this.sObjectType = this.sObjectTypes.get(event.detail.value);
     }
 
+    handleRecordTypeChange(event) {
+        this.recordTypeId = event.detail.value;
+    }
+
     handleUpload(event) {
         this.isUploadInputDisabled = true;
         let reader = new FileReader();
-        var self = this;
+        let self = this;
         reader.onload = function (e) {
-            var binary = '';
-            var bytes = new Uint8Array(e.target.result);
-            var length = bytes.byteLength;
-            for (var i = 0; i < length; i++) {
+            let binary = '';
+            let bytes = new Uint8Array(e.target.result);
+            let length = bytes.byteLength;
+            for (let i = 0; i < length; i++) {
                 binary += String.fromCharCode(bytes[i]);
             }
-            var workbook = XLSX.read(binary, { type: 'binary' });
-            var sheet_name_list = workbook.SheetNames;
+            let workbook = XLSX.read(binary, { type: 'binary' });
+            let sheet_name_list = workbook.SheetNames;
             self.raws = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
             if (self.objectType) {
                 self.isSubmitButtonDisabled = false;
@@ -120,7 +125,6 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
                 this.isLoaded = true;
             })
             .catch(error => {
-                console.log(error);
                 this.message = error.body.message;
                 this.isLoaded = true;
             });

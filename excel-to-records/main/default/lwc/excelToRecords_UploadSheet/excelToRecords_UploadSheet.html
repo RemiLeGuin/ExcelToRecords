@@ -10,7 +10,7 @@
             <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} disabled={isObjectTypeInputDisabled} onchange={handleObjectTypeChange}></lightning-combobox>
         </div>
         <div class="slds-align_absolute-center slds-m-top_medium">
-            <lightning-combobox name="record-type" label="Record Type" value={recordType} options={recordsTypes} disabled={isRecordTypeInputDisabled} onchange={handleRecordTypeChange}></lightning-combobox>
+            <lightning-combobox name="record-type" label="Record Type" value={recordTypeId} options={recordTypes} disabled={isRecordTypeInputDisabled} onchange={handleRecordTypeChange}></lightning-combobox>
         </div>
         <div class="slds-align_absolute-center slds-m-top_large">
             <lightning-button variant="brand" label="Insert Records" class="slds-m-left_x-small" disabled={isSubmitButtonDisabled} onclick={handleSubmit}></lightning-button>
