@@ -7,8 +7,10 @@ import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
+    @track isLoaded = true;
     @track message;
     @track raws;
+    @track isUploadInputDisabled = false;
     @track objectTypes = [];
     @track objectType;
     @track sObjectTypes = new Map();
@@ -89,6 +91,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
     }
 
     handleUpload(event) {
+        this.isUploadInputDisabled = true;
         let reader = new FileReader();
         var self = this;
         reader.onload = function (e) {
@@ -104,18 +107,22 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             if (self.objectType) {
                 self.isSubmitButtonDisabled = false;
             }
+            self.isUploadInputDisabled = false;
         }
         reader.readAsArrayBuffer(event.target.files[0]);
     }
     
     handleSubmit() {
+        this.isLoaded = false;
         insertRecords({ raws: this.raws, objectType: this.objectType, sObjectType: this.sObjectType, recordTypeId: this.recordTypeId })
             .then(result => {
                 this.message = result;
+                this.isLoaded = true;
             })
             .catch(error => {
                 console.log(error);
                 this.message = error.body.message;
+                this.isLoaded = true;
             });
     }
     

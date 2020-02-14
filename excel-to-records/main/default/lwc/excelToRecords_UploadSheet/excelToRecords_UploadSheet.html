@@ -1,7 +1,10 @@
 <template>
+    <div if:false={isLoaded}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </div>
     <lightning-card  title="">
         <div class="slds-align_absolute-center">
-            <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange={handleUpload}></lightning-input>
+            <lightning-input type="file" label="Excel File" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disabled={isUploadInputDisabled} onchange={handleUpload}></lightning-input>
         </div>
         <div class="slds-align_absolute-center slds-m-top_medium">
             <lightning-combobox name="object-type" label="Object" value={objectType} options={objectTypes} disabled={isObjectTypeInputDisabled} onchange={handleObjectTypeChange}></lightning-combobox>
