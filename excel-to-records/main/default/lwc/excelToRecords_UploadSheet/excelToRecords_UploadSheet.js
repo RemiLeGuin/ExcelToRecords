@@ -149,6 +149,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             if (self.objectType) {
                 self.isSubmitButtonDisabled = false;
             }
+            console.log(new Blob([ JSON.stringify(self.raws) ], { type:'application/json' }).size);
             self.isUploadInputDisabled = false;
         }
         reader.readAsArrayBuffer(event.target.files[0]);
@@ -161,6 +162,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
                 this.message = result;
             })
             .catch(error => {
+                console.log(error);
                 this.message = error.body.message;
                 this.isLoaded = true;
             });
