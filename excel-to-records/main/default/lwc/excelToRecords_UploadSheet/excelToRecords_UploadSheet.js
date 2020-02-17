@@ -1,5 +1,6 @@
-import { LightningElement, track, wire } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { loadScript } from 'lightning/platformResourceLoader';
+import { subscribe, onError } from 'lightning/empApi';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
 import getObjects from '@salesforce/apex/ExcelToRecords.getObjects';
 import getRecordTypes from '@salesforce/apex/ExcelToRecords.getRecordTypes';
@@ -7,21 +8,28 @@ import insertRecords from '@salesforce/apex/ExcelToRecords.insertRecords';
 
 export default class ExcelToRecords_UploadSheet extends LightningElement {
 
-    @track isLoaded = true;
-    @track message;
-    @track raws;
-    @track isUploadInputDisabled = false;
-    @track objectTypes = [];
-    @track objectType;
-    @track sObjectTypes = new Map();
-    @track sObjectType;
-    @track isObjectTypeInputDisabled = true;
-    @track recordTypes = [];
-    @track recordTypeId;
-    @track isRecordTypeInputDisabled = true;
-    @track isSubmitButtonDisabled = true;
+    channelName = '/event/ExcelToRecords_AsynchronousDml__e';
+    subscription = {};
+    isLoaded = true;
+    message;
+    raws;
+    isUploadInputDisabled = false;
+    objectTypes = [];
+    objectType;
+    sObjectTypes = new Map();
+    sObjectType;
+    isObjectTypeInputDisabled = true;
+    recordTypes = [];
+    recordTypeId;
+    isRecordTypeInputDisabled = true;
+    isSubmitButtonDisabled = true;
 
     connectedCallback() {
+        this.loadSheetJs();
+        this.subscribePlatformEvent();
+    }
+
+    loadSheetJs() {
         Promise.all([
             loadScript(this, SHEETJS + '/xlsx.mini.js')
         ])
@@ -31,13 +39,39 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
             });
     }
 
+    subscribePlatformEvent() {
+        var self = this;
+        const messageCallback = function (response) {
+            self.message = response.data.payload.NumberOfRecords__c + ' ' + response.data.payload.ObjectType__c + ' to ' + response.data.payload.Operation__c;
+            self.message += ' - Success: ' + response.data.payload.Successful__c;
+            self.message += ' - Failed: ' + response.data.payload.Failed__c;
+            if (response.data.payload.Status__c !== 'Success') {
+                self.message += ' - Error: ' + response.data.payload.Message__c;
+            }
+            self.isLoaded = true;
+        };
+        subscribe(this.channelName, -1, messageCallback)
+            .then(response => {
+                console.log('Successfully subscribed to : ', JSON.stringify(response.channel));
+                this.subscription = response;
+            });
+    }
+
+    registerErrorListener() {
+        var self = this;
+        onError(error => {
+            self.message = JSON.stringify(error);
+            self.isLoaded = true;
+        });
+    }
+
     @wire(getObjects)
     wiredObjects({ data, error }) {
         var self = this;
         if (data) {
             data.forEach(function (objectType) {
                 let option = { label: objectType.Label, value: objectType.DeveloperName };
-                self.objectTypes = [ ...self.objectTypes, option ];
+                self.objectTypes = [...self.objectTypes, option];
                 self.sObjectTypes.set(objectType.DeveloperName, objectType.SalesforceObject__c);
             });
             if (this.objectTypes.length > 0) {
@@ -68,7 +102,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
         if (data) {
             data.forEach(function (recordType) {
                 let option = { label: recordType.Name, value: recordType.Id };
-                self.recordTypes = [ ...self.recordTypes, option ];
+                self.recordTypes = [...self.recordTypes, option];
             });
             if (this.recordTypes.length > 0) {
                 this.recordTypeId = this.recordTypes[0].value;
@@ -116,18 +150,17 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
         }
         reader.readAsArrayBuffer(event.target.files[0]);
     }
-    
+
     handleSubmit() {
         this.isLoaded = false;
         insertRecords({ raws: this.raws, objectType: this.objectType, sObjectType: this.sObjectType, recordTypeId: this.recordTypeId })
             .then(result => {
                 this.message = result;
-                this.isLoaded = true;
             })
             .catch(error => {
                 this.message = error.body.message;
                 this.isLoaded = true;
             });
     }
-    
+
 }
