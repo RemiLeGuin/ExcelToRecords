@@ -1,4 +1,5 @@
 import { LightningElement, wire } from 'lwc';
+import USER_ID from '@salesforce/user/Id';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { subscribe, onError } from 'lightning/empApi';
 import SHEETJS from '@salesforce/resourceUrl/SheetJS';
@@ -10,6 +11,7 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
 
     channelName = '/event/ExcelToRecords_AsynchronousDml__e';
     subscription = {};
+    userId = USER_ID;
     isLoaded = true;
     message;
     raws;
@@ -42,17 +44,18 @@ export default class ExcelToRecords_UploadSheet extends LightningElement {
     subscribePlatformEvent() {
         var self = this;
         const messageCallback = function (response) {
-            self.message = response.data.payload.NumberOfRecords__c + ' ' + response.data.payload.ObjectType__c + ' to ' + response.data.payload.Operation__c;
-            self.message += ' - Success: ' + response.data.payload.Successful__c;
-            self.message += ' - Failed: ' + response.data.payload.Failed__c;
-            if (response.data.payload.Status__c !== 'Success') {
-                self.message += ' - Error: ' + response.data.payload.Message__c;
+            if (response.data.payload.User__c === self.userId) {
+                self.message = response.data.payload.NumberOfRecords__c + ' ' + response.data.payload.ObjectType__c + ' to ' + response.data.payload.Operation__c;
+                self.message += ' - Success: ' + response.data.payload.Successful__c;
+                self.message += ' - Failed: ' + response.data.payload.Failed__c;
+                if (response.data.payload.Status__c !== 'Success') {
+                    self.message += ' - Error: ' + response.data.payload.Message__c;
+                }
+                self.isLoaded = true;
             }
-            self.isLoaded = true;
         };
         subscribe(this.channelName, -1, messageCallback)
             .then(response => {
-                console.log('Successfully subscribed to : ', JSON.stringify(response.channel));
                 this.subscription = response;
             });
     }

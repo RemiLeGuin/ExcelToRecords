@@ -7,6 +7,7 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
     private Map<String, String> mappings;
     private Map<String, Object> columns;
     private Map<String, String> fieldsType;
+    private Id userId;
 
     public ExcelToRecords_RecordsInsertion() {}
 
@@ -16,7 +17,8 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
                                            Id recordTypeId,
                                            Map<String, String> mappings,
                                            Map<String, Object> columns,
-                                           Map<String, String> fieldsType) {
+                                           Map<String, String> fieldsType,
+                                           Id userId) {
         this.raws = raws;
         this.sObjectType = sObjectType;
         this.objectType = objectType;
@@ -24,10 +26,11 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
         this.mappings = mappings;
         this.columns = columns;
         this.fieldsType = fieldsType;
+        this.userId = userId;
     }
 
     public void execute(QueueableContext context) {
-        insertRecords(raws, sObjectType, objectType, recordTypeId, mappings, columns, fieldsType);
+        insertRecords(raws, sObjectType, objectType, recordTypeId, mappings, columns, fieldsType, userId);
     }
 
     public static String insertRecords(List<Object> raws,
@@ -36,7 +39,8 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
                                        Id recordTypeId,
                                        Map<String, String> mappings,
                                        Map<String, Object> columns,
-                                       Map<String, String> fieldsType) {
+                                       Map<String, String> fieldsType,
+                                       Id userId) {
         List<SObject> records = new List<SObject> ();
         for (Object raw : raws) {
             SObject record = Schema.getGlobalDescribe().get(sObjectType).newSObject();
@@ -59,6 +63,7 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
             asyncDml.NumberOfRecords__c = records.size();
             asyncDml.Successful__c = records.size();
             asyncDml.Failed__c = 0;
+            asyncDml.User__c = userId;
             EventBus.publish(asyncDml);
             return records.size() + ' records inserted';
         }
@@ -72,6 +77,7 @@ public with sharing class ExcelToRecords_RecordsInsertion implements Queueable {
             asyncDml.Successful__c = 0;
             asyncDml.Failed__c = records.size();
             asyncDml.Message__c = e.getMessage();
+            asyncDml.User__c = userId;
             EventBus.publish(asyncDml);
             return e.getMessage();
         }

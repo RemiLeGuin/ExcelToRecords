@@ -4,11 +4,9 @@ Repository under construction.
 
 ## Install Unlocked Package
 
-Install the unlocked package with this ID: 04t3X000002c8nLQAQ
-
-In Trailhead Playgrounds, you can do it by copy/pasting the ID in the install page:
-
-![Install package in Playgrounds](install.png)
+Install the unlocked package following this URL:
+-   For Sandboxes: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cNKlQAM
+-   For Production environments, Developer Editions and Trailhead Playgrounds: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cNKlQAM
 
 ## Install with Metadata API by deploying the src folder
 

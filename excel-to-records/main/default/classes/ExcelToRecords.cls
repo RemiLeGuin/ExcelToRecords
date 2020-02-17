@@ -16,7 +16,8 @@ public with sharing class ExcelToRecords {
         Map<Object, Object> firstRaw = (Map<Object,Object>)raws[0];
         Map<String, Object> columns = getColumns(firstRaw.keySet());
         Map<String, String> fieldsType = getFieldType(sObjectType, mappings, columns);
-        System.enqueueJob(new ExcelToRecords_RecordsInsertion(raws, sObjectType, objectType, recordTypeId, mappings, columns, fieldsType));
+        Id userId = UserInfo.getUserId();
+        System.enqueueJob(new ExcelToRecords_RecordsInsertion(raws, sObjectType, objectType, recordTypeId, mappings, columns, fieldsType, userId));
     }
 
     private static Map<String, String> getMappings(String objectType) {
