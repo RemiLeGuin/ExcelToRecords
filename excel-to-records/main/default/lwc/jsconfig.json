@@ -4,6 +4,9 @@
         "paths": {
             "c/excelToRecords_UploadSheet": [
                 "excelToRecords_UploadSheet/excelToRecords_UploadSheet.js"
+            ],
+            "c/excelToRecords_UploadSheet_BulkAPI": [
+                "excelToRecords_UploadSheet_BulkAPI/excelToRecords_UploadSheet_BulkAPI.js"
             ]
         },
         "experimentalDecorators": true

@@ -3,6 +3,9 @@
     <description>Upload an Excel sheet to create records in Salesforce.</description>
     <flexiPageRegions>
         <componentInstances>
+            <componentName>excelToRecords_UploadSheet_BulkAPI</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentName>excelToRecords_UploadSheet</componentName>
         </componentInstances>
         <name>main</name>
