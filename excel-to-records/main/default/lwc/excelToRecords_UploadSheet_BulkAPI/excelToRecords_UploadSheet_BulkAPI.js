@@ -152,7 +152,6 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
         conn.login('remileguin@brave-goat-ssn01h.com', 'SheetJS2020' + 'rAFfJe4xlLZaSGFlALCwwL4za', err => {
             if (err) {
                 console.error(err);
-                process.exit(-1);
             }
         });
     }
