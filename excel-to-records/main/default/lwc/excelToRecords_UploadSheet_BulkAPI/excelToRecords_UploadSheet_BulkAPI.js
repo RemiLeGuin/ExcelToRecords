@@ -121,8 +121,8 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
 
     handleSubmit() {
         //this.isLoaded = false;
-        fetch('https://login.salesforce.com/services/oauth2/token', {
-            method: 'POST',
+        /*fetch('https://login.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg&client_secret=EED8F6B893D37171B3FB6FF57FE35588EBC0399F1BD674C26E23EF9896A06CA5&username=remileguin@brave-goat-ssn01h.com&password=SheetJS2020rAFfJe4xlLZaSGFlALCwwL4za', {
+            method: "POST",
             body: 'grant_type=password&client_id=3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg&client_secret=EED8F6B893D37171B3FB6FF57FE35588EBC0399F1BD674C26E23EF9896A06CA5&username=remileguin@brave-goat-ssn01h.com&password=SheetJS2020rAFfJe4xlLZaSGFlALCwwL4za'
         })
             .then((response) => {
@@ -133,7 +133,7 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
             })
             .catch(error => {
                 console.log(JSON.stringify(error));
-            })
+            })*/
         /*const conn = new jsforce.Connection({
             loginUrl: 'https://login.salesforce.com'
         });
@@ -144,20 +144,21 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
             console.log(res);
         });*/
         /*jsforce.browser.init({
-            clientId: '[ 3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg ]',
-            redirectUri: '[ http://localhost:1717/OauthRedirect ]'
+            clientId: '3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg',
+            redirectUri: 'https://login.salesforce.com/services/oauth2/success'
         });
-        console.log('COUCOU1');
+        console.log('AFTER jsforce.browser.init');
         jsforce.browser.on('connect', function (conn) {
+            console.log('AFTER jsforce.browser.on connect');
             console.log(conn);
             conn.query('SELECT Id, Name FROM Account', function (err, res) {
-                console.log('COUCOU3');
+                console.log('AFTER QUERY');
                 if (err) {
                     return console.error(err);
                 }
                 console.log(res);
             });
-            console.log('COUCOU4');
+            console.log('END');
         });*/
         /*const conn = new jsforce.Connection({
             loginUrl: 'https://login.salesforce.com'
@@ -168,6 +169,19 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
                 console.error(JSON.stringify(err));
             }
         });*/
+        /*fetch('https://login.salesforce.com/services/oauth2/token?grant_type=password&client_id=3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg&client_secret=EED8F6B893D37171B3FB6FF57FE35588EBC0399F1BD674C26E23EF9896A06CA5&username=remileguin@brave-goat-ssn01h.com&password=SheetJS2020rAFfJe4xlLZaSGFlALCwwL4za', {
+			method : 'POST'
+        });*/
+        let conn = new jsforce.Connection({ accessToken: 'K2ckDuTWax9zBJZW24CF6aJ+IzH0k6NLe6ymF20MEC8=' });
+        conn.query('SELECT Id, Name FROM Account', function (err, res) {
+            console.log('AFTER QUERY');
+            if (err) {
+                console.log('ERROR:');
+                return console.log(JSON.stringify(err));
+            }
+            console.log('RESPONSE:');
+            console.log(res);
+        });
     }
 
 }
