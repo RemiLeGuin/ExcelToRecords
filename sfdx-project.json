@@ -10,7 +10,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "47.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
         "Excel to Records": "0Ho3X000000TN7cSAG",
         "Excel to Records@0.1.0-1": "04t3X000002bb4SQAQ",
@@ -21,6 +21,7 @@
         "Excel to Records@0.1.0-6": "04t3X000002c3zPQAQ",
         "Excel to Records@0.1.0-7": "04t3X000002c8nLQAQ",
         "Excel to Records@0.1.0-8": "04t3X000002cNGTQA2",
-        "Excel to Records@0.1.0-10": "04t3X000002cNKlQAM"
+        "Excel to Records@0.1.0-10": "04t3X000002cNKlQAM",
+        "Excel to Records@0.1.0-11": "04t3X000002calvQAA"
     }
 }

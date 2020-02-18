@@ -121,7 +121,7 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
 
     handleSubmit() {
         //this.isLoaded = false;
-        /*fetch('https://login.salesforce.com/services/oauth2/token', {
+        fetch('https://login.salesforce.com/services/oauth2/token', {
             method: 'POST',
             body: 'grant_type=password&client_id=3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg&client_secret=EED8F6B893D37171B3FB6FF57FE35588EBC0399F1BD674C26E23EF9896A06CA5&username=remileguin@brave-goat-ssn01h.com&password=SheetJS2020rAFfJe4xlLZaSGFlALCwwL4za'
         })
@@ -133,27 +133,41 @@ export default class ExcelToRecords_UploadSheet_BulkAPI extends LightningElement
             })
             .catch(error => {
                 console.log(JSON.stringify(error));
-            })*/
+            })
+        /*const conn = new jsforce.Connection({
+            loginUrl: 'https://login.salesforce.com'
+        });
+        conn.login('remileguin@brave-goat-ssn01h.com', 'SheetJS2020rAFfJe4xlLZaSGFlALCwwL4za', function(err, res) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log(res);
+        });*/
         /*jsforce.browser.init({
             clientId: '[ 3MVG91BJr_0ZDQ4sEmiCuq5yP_dKNkuIYrfk0g3Y70rtj8fM2eWMUXIgcFa.mh2PLZGfPq7bo0x3JbQ7hj2Dg ]',
             redirectUri: '[ http://localhost:1717/OauthRedirect ]'
         });
+        console.log('COUCOU1');
         jsforce.browser.on('connect', function (conn) {
+            console.log(conn);
             conn.query('SELECT Id, Name FROM Account', function (err, res) {
+                console.log('COUCOU3');
                 if (err) {
                     return console.error(err);
                 }
                 console.log(res);
             });
+            console.log('COUCOU4');
         });*/
-        const conn = new jsforce.Connection({
+        /*const conn = new jsforce.Connection({
             loginUrl: 'https://login.salesforce.com'
         });
         conn.login('remileguin@brave-goat-ssn01h.com', 'SheetJS2020' + 'rAFfJe4xlLZaSGFlALCwwL4za', err => {
             if (err) {
-                console.error(err);
+                console.log('ERROR');
+                console.error(JSON.stringify(err));
             }
-        });
+        });*/
     }
 
 }
