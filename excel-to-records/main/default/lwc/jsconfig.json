@@ -7,6 +7,9 @@
             ],
             "c/excelToRecords_UploadSheet_BulkAPI": [
                 "excelToRecords_UploadSheet_BulkAPI/excelToRecords_UploadSheet_BulkAPI.js"
+            ],
+            "c/JSforce": [
+                "../staticresources/JSforce/JSforce.js"
             ]
         },
         "experimentalDecorators": true
