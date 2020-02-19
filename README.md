@@ -1,12 +1,15 @@
 # Excel to Records
 
-Repository under construction.
+Repository under construction. To improve:
+-   The Apex treatment is heavy. Consider manipulating .CSV or another format than Map<Object, Object> with SheetJS.
+-   There is no callback in case of Apex CPU time limit or fail other than the DML operation in the try-catch. Consider using a transaction finalizer to warn the user.
+-   Apex test coverage and code comment.
 
 ## Install Unlocked Package
 
 Install the unlocked package following this URL:
--   For Sandboxes: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cNKlQAM
--   For Production environments, Developer Editions and Trailhead Playgrounds: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cNKlQAM
+-   For Sandboxes: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cgwIQAQ
+-   For Production environments, Developer Editions and Trailhead Playgrounds: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002cgwIQAQ
 
 ## Install with Metadata API by deploying the src folder
 
