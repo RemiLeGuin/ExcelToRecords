@@ -13,7 +13,7 @@ Install the unlocked package following this URL:
 To deploy this repository using the classic Metadata API, execute the folowing command line from the cloned workspace:
 
 ```
-sfdx force:mdapi:deploy --zipfile src/excel-to-records.zip --wait 10 --singlepackage --targetusername /*username or alias for the target environment*/
+sfdx force:mdapi:deploy --zipfile metadata-api/excel-to-records.zip --wait 10 --singlepackage --targetusername /*username or alias for the target environment*/
 ```
 
 ## Useful command lines for development
@@ -21,7 +21,7 @@ sfdx force:mdapi:deploy --zipfile src/excel-to-records.zip --wait 10 --singlepac
 Retrieve with Metadata API format:
 
 ```
-sfdx force:mdapi:retrieve --targetusername ExcelToRecordsSO --wait 10 --unpackaged manifest/package.xml --retrievetargetdir src --singlepackage
+sfdx force:mdapi:retrieve --targetusername ExcelToRecordsSO --wait 10 --unpackaged manifest/package.xml --retrievetargetdir metadata-api --singlepackage
 ```
 
 Create a package version:

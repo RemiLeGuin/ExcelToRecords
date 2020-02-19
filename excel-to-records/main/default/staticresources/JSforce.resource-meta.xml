@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
-    <cacheControl>Public</cacheControl>
-    <contentType>application/x-zip-compressed</contentType>
-    <description>JSforce (f.k.a. Node-Salesforce) is a isomorphic JavaScript Library utilizing Salesforce&#39;s API: It works both in browser and with Node.js. https://jsforce.github.io/</description>
-</StaticResource>

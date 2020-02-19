@@ -6,20 +6,6 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <members>https_app_customization_9724_dev_ed_lightning_force_com</members>
-        <members>https_login_salesforce_com</members>
-        <members>https_ruby_computing_306_dev_ed_lightning_force_com</members>
-        <members>https_test_salesforce_com</members>
-        <name>CorsWhitelistOrigin</name>
-    </types>
-    <types>
-        <members>Salesforce_Login</members>
-        <members>Salesforce_Test</members>
-        <members>ScratchOrg_Home</members>
-        <members>ScratchOrg_Work</members>
-        <name>CspTrustedSite</name>
-    </types>
-    <types>
         <members>ExcelToRecords_FieldMapping.Demande_Description</members>
         <members>ExcelToRecords_FieldMapping.Demande_Email</members>
         <members>ExcelToRecords_FieldMapping.Demande_Escalade</members>
@@ -67,13 +53,6 @@
     <types>
         <members>excelToRecords_UploadSheet</members>
         <name>LightningComponentBundle</name>
-    </types>
-    <types>
-        <members>Salesforce_Login</members>
-        <members>Salesforce_Test</members>
-        <members>ScratchOrg_Home</members>
-        <members>ScratchOrg_Work</members>
-        <name>RemoteSiteSetting</name>
     </types>
     <types>
         <members>SheetJS</members>
